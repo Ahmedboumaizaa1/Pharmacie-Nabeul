@@ -69,3 +69,5 @@ Une pull request rouge ne peut alors plus être fusionnée.
 L'environnement de test du pipeline est la machine temporaire du job : elle disparaît à la fin.
 Il prouve que la version démarre et passe le contrôle de santé. Pour un environnement qui reste en place, remplacer
 `deploy_test` par une connexion SSH vers un serveur qui exécute `scripts/deploy.sh`.
+
+Auteur : TON NOM
