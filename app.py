@@ -56,7 +56,8 @@ def create_app(database_url=None):
                 conn.execute(text("SELECT 1"))
         except Exception:
             return jsonify(status="error", database="down", version=version), 503
-	return jsonify(status="ok", database="up", 	version=version,service="pharmacie-nabeul")
+        return jsonify(status="ok", database="up", version=version, service="pharmacie-nabeul")
+
     @app.get("/pharmacies")
     def liste():
         query = select(pharmacies).where(pharmacies.c.de_garde.is_(True))
