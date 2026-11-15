@@ -5,7 +5,7 @@
 ## Architecture
 
 ```
- Développeur ──git push──> GitLab ──pipeline──> Registry (image)
+ Développeur ──git push──> GitHub ──pipeline──> Registry (image)
                                                     │
                           tag vX.Y.Z ── release ────┘ (re-étiquetage, pas de reconstruction)
                                                     │
@@ -23,7 +23,7 @@
 - **Conteneur :** image `python:3.12-slim`, utilisateur non root, `HEALTHCHECK`.
 - **Compose :** `app` et `db`; l'application joint la base par le nom `db`; le port de la base n'est pas publié;
   les données sont dans le volume `db_data`; `app` démarre seulement quand `db` est sain.
-- **Pipeline :** `test` (Python 3.11 et 3.12) → `build` → `release` (tag) → `deploy_test`.
+- **Pipeline (GitHub Actions) :** `test` (Python 3.11 et 3.12) → `build` → `release` (tag) → `deploy_test`.
 
 ## Version mise en service
 

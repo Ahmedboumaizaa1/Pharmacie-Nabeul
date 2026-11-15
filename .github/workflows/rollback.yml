@@ -1,0 +1,30 @@
+name: Retour arrière
+
+# À lancer à la main : onglet Actions > Retour arrière > Run workflow
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version précédente vers laquelle revenir (ex. v1.0.0)"
+        required: true
+        default: "v1.0.0"
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  rollback_test:
+    runs-on: ubuntu-latest
+    environment: test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Nom de l'image en minuscules (exigé par GHCR)
+        run: echo "APP_IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Remise en service de la version précédente
+        run: ./scripts/deploy.sh "${{ inputs.version }}"
