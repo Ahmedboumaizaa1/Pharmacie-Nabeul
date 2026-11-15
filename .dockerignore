@@ -1,0 +1,14 @@
+.git
+.gitignore
+.gitlab-ci.yml
+.env
+.env.example
+__pycache__/
+*.pyc
+.pytest_cache/
+tests/
+scripts/
+docker-compose.yml
+README.md
+FICHE.md
+report*.xml

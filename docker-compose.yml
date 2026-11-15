@@ -1,0 +1,32 @@
+services:
+  app:
+    build: .
+    image: ${APP_IMAGE:-pharmacie-nabeul}:${APP_VERSION:-v1.0.0}
+    environment:
+      DATABASE_URL: postgresql+psycopg2://pharma:${POSTGRES_PASSWORD:-pharma_dev}@db:5432/pharmacie
+      APP_VERSION: ${APP_VERSION:-v1.0.0}
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: pharma
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pharma_dev}
+      POSTGRES_DB: pharmacie
+    # Aucun "ports:" : la base n'est joignable que par le service app (réseau Compose).
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pharma -d pharmacie"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  db_data:
