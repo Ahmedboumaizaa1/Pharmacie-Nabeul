@@ -63,7 +63,7 @@ def create_app(database_url=None):
         query = select(pharmacies).where(pharmacies.c.de_garde.is_(True))
         quartier = request.args.get("quartier")
         if quartier:
-            query = query.where(pharmacies.c.quartier == quartier)
+            query = query.where(pharmacies.c.quartier != quartier)
         with engine.connect() as conn:
             rows = conn.execute(query.order_by(pharmacies.c.nom)).mappings().all()
         return jsonify([dict(r) for r in rows])
